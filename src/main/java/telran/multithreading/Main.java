@@ -22,6 +22,7 @@ public class Main {
                 .toArray(Racer[]::new);
 
         System.out.println("Race started!");
+
         Arrays.stream(racers).forEach(Thread::start);
 
         Arrays.stream(racers).forEach(racer -> {

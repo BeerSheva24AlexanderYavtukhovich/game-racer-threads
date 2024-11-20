@@ -23,9 +23,8 @@ public class Race {
         return new Random().nextInt(maxSleepTime - minSleepTime + 1) + minSleepTime;
     }
 
-    public void setWinner(int racerNumber) {
-        while (winner.get() == 0 && !winner.compareAndSet(0, racerNumber)) {
-        }
+    public synchronized boolean setWinner(int racerNumber) {
+        return (winner.get() == 0) ? winner.compareAndSet(0, racerNumber) : false;
     }
 
     public int getWinner() {
