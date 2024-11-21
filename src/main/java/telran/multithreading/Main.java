@@ -14,24 +14,31 @@ public class Main {
         InputOutput io = new StandardInputOutput();
         int nRacers = io.readInt("Enter the number of racers:", "Incorrect input");
         int distance = io.readInt("Enter the distance:", "Incorrect input");
-
         Race race = new Race(distance, MIN_SLEEP_TIME, MAX_SLEEP_TIME);
-
         Racer[] racers = IntStream.rangeClosed(1, nRacers)
                 .mapToObj(i -> new Racer(race, i))
                 .toArray(Racer[]::new);
 
+        start(racers);
+        join(racers);
+        finish(race);
+    }
+
+    private static void finish(Race race) {
+        System.out.printf("Congratulations to Racer #%d - the winner!%n", race.getWinner());
+    }
+
+    private static void start(Racer[] racers) {
         System.out.println("Race started!");
-
         Arrays.stream(racers).forEach(Thread::start);
+    }
 
+    private static void join(Racer[] racers) {
         Arrays.stream(racers).forEach(racer -> {
             try {
                 racer.join();
             } catch (InterruptedException e) {
             }
         });
-
-        System.out.printf("Congratulations to Racer #%d - the winner!%n", race.getWinner());
     }
 }
