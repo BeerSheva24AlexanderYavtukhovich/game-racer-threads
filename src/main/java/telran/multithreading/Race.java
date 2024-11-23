@@ -1,12 +1,13 @@
 package telran.multithreading;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Race {
     private final int distance;
     private final int minSleep;
     private final int maxSleep;
-    AtomicInteger winner = new AtomicInteger(-1);
+    private final List<Racer> photoFinishList = new ArrayList<>();
     private long startTime;
 
     public Race(int distance, int minSleep, int maxSleep) {
@@ -15,8 +16,16 @@ public class Race {
         this.maxSleep = maxSleep;
     }
 
-    public int getWinner() {
-        return winner.get();
+    public synchronized void startRace() {
+        this.startTime = System.currentTimeMillis();
+    }
+
+    public synchronized void addToPhotoFinishList(Racer racer) {
+        photoFinishList.add(racer);
+    }
+
+    public List<Racer> getPhotoFinishList() {
+        return photoFinishList;
     }
 
     public int getDistance() {
@@ -33,10 +42,6 @@ public class Race {
 
     public long getStartTime() {
         return startTime;
-    }
-
-    public synchronized void startRace() {
-        this.startTime = System.currentTimeMillis();
     }
 
 }
