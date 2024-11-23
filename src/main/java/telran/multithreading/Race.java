@@ -20,7 +20,7 @@ public class Race {
         this.startTime = System.currentTimeMillis();
     }
 
-    public synchronized void addToPhotoFinishList(Racer racer) {
+    public void addToPhotoFinishList(Racer racer) {
         photoFinishList.add(racer);
     }
 

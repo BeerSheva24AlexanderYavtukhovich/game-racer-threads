@@ -25,8 +25,11 @@ public class Racer extends Thread {
             } catch (InterruptedException e) {
             }
         }
-        finishTime = System.currentTimeMillis();
-        race.addToPhotoFinishList(this);
+
+        synchronized (race) {
+            race.addToPhotoFinishList(this);
+            setFinishTime(System.currentTimeMillis());
+        }
     }
 
     public long getFinishTime() {
@@ -35,5 +38,9 @@ public class Racer extends Thread {
 
     public int getNumber() {
         return number;
+    }
+
+    private void setFinishTime(long time) {
+        this.finishTime = time;
     }
 }
