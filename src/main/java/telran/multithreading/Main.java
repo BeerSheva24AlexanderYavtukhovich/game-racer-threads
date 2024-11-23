@@ -1,6 +1,8 @@
 package telran.multithreading;
 
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
 import telran.view.InputOutput;
@@ -9,6 +11,9 @@ import telran.view.StandardInputOutput;
 public class Main {
     private static final int MIN_SLEEP_TIME = 50;
     private static final int MAX_SLEEP_TIME = 100;
+    private static final String HEADER_FORMAT = "| %-6s | %-12s | %-10s |%n";
+    private static final String ROW_FORMAT = "| %-6d | %-12d | %-10d |%n";
+    private static final String LINE = "+--------+--------------+------------+";
 
     public static void main(String[] args) {
         InputOutput io = new StandardInputOutput();
@@ -19,16 +24,33 @@ public class Main {
                 .mapToObj(i -> new Racer(race, i))
                 .toArray(Racer[]::new);
 
-        start(racers);
+        start(race, racers);
         join(racers);
-        finish(race);
+        finish(race, racers);
     }
 
-    private static void finish(Race race) {
-        System.out.printf("Congratulations to Racer #%d - the winner!%n", race.getWinner());
+    private static void finish(Race race, Racer[] racers) {
+        System.out.println("\nRace finished! Results:");
+        System.out.println(LINE);
+        System.out.printf(HEADER_FORMAT, "Place", "Racer Number", "Time (ms)");
+        System.out.println(LINE);
+        AtomicInteger placeCounter = new AtomicInteger(1);
+
+        Arrays.stream(racers)
+                .sorted(Comparator.comparingLong(Racer::getFinishTime))
+                .forEach(racer -> {
+                    long runningTime = racer.getFinishTime() - race.getStartTime();
+                    System.out.printf(ROW_FORMAT,
+                            placeCounter.getAndIncrement(),
+                            racer.getNumber(),
+                            runningTime);
+                });
+
+        System.out.println(LINE);
     }
 
-    private static void start(Racer[] racers) {
+    private static void start(Race race, Racer[] racers) {
+        race.startRace();
         System.out.println("Race started!");
         Arrays.stream(racers).forEach(Thread::start);
     }

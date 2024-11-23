@@ -7,6 +7,7 @@ public class Race {
     private final int minSleep;
     private final int maxSleep;
     AtomicInteger winner = new AtomicInteger(-1);
+    private long startTime;
 
     public Race(int distance, int minSleep, int maxSleep) {
         this.distance = distance;
@@ -28,6 +29,14 @@ public class Race {
 
     public int getMaxSleep() {
         return maxSleep;
+    }
+
+    public long getStartTime() {
+        return startTime;
+    }
+
+    public synchronized void startRace() {
+        this.startTime = System.currentTimeMillis();
     }
 
 }
