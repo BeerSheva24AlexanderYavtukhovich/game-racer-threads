@@ -16,7 +16,7 @@ public class Race {
         this.maxSleep = maxSleep;
     }
 
-    public synchronized void startRace() {
+    public void startRace() {
         this.startTime = System.currentTimeMillis();
     }
 

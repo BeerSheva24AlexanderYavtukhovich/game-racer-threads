@@ -5,6 +5,7 @@ import java.util.Random;
 public class Racer extends Thread {
     private final Race race;
     private final int number;
+    private long finishTime;
 
     public Racer(Race race, int number) {
         this.race = race;
@@ -24,11 +25,12 @@ public class Racer extends Thread {
             } catch (InterruptedException e) {
             }
         }
+        finishTime = System.currentTimeMillis();
         race.addToPhotoFinishList(this);
     }
 
     public long getFinishTime() {
-        return System.currentTimeMillis();
+        return finishTime;
     }
 
     public int getNumber() {

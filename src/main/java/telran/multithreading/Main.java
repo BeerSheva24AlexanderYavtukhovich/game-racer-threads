@@ -1,7 +1,6 @@
 package telran.multithreading;
 
 import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
 import telran.view.InputOutput;
@@ -33,15 +32,12 @@ public class Main {
         System.out.println(LINE);
         System.out.printf(HEADER_FORMAT, "Place", "Racer Number", "Time (ms)");
         System.out.println(LINE);
-        AtomicInteger placeCounter = new AtomicInteger(1);
+        int placeCounter = 1;
 
-        race.getPhotoFinishList().forEach(racer -> {
+        for (Racer racer : race.getPhotoFinishList()) {
             long runningTime = racer.getFinishTime() - race.getStartTime();
-            System.out.printf(ROW_FORMAT,
-                    placeCounter.getAndIncrement(),
-                    racer.getNumber(),
-                    runningTime);
-        });
+            System.out.printf(ROW_FORMAT, placeCounter++, racer.getNumber(), runningTime);
+        }
 
         System.out.println(LINE);
     }
